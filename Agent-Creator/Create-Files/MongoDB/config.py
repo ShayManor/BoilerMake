@@ -2,18 +2,18 @@ import os
 from pymongo import MongoClient
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
+# Load environment variables
 load_dotenv()
 
-# Get the MongoDB URI from environment variables
+# Get MongoDB connection string
 MONGO_URI = os.getenv("MONGO_URI")
 
 if not MONGO_URI:
-    raise ValueError("MONGO_URI not found in .env file. Please check your configuration.")
+    raise ValueError("❌ MONGO_URI is missing in .env file!")
 
 # Connect to MongoDB
 client = MongoClient(MONGO_URI)
-db = client["test1"]  # Change this to your database name if needed
+db = client["test1"]
 
 # Test connection
 try:
