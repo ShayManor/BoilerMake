@@ -20,7 +20,7 @@ def gpt(prompt):
 
 
 def create_app(description):
-    with open("../../../Agent-Creator/Sample-Agents/template/app.py", "r") as f:
+    with open("../../../Agent_Creator/Sample-Agents/template/app.py", "r") as f:
         template = f.read()
     res = gpt(prompt_shell(description, template))
     template = template.replace("# Write code here", res)

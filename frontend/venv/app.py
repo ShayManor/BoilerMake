@@ -1,7 +1,9 @@
 import os
 from flask import Flask, render_template, request, jsonify
+from openai import OpenAI
 from pymongo import MongoClient
-
+from Agent_Creator.Create_Files.Creator.create_files import main
+from Agent_Creator.Create_Files.Creator.enums import AGENT, AI
 app = Flask(__name__)
 
 # Get the Atlas connection string from an environment variable.
@@ -9,6 +11,31 @@ MONGO_URI = os.environ.get(
     'MONGO_URI',
     'mongodb+srv://trueflash42:dOKpvn6cqAyK7RHb@agent.ctwv3.mongodb.net/boilermake25?retryWrites=true&w=majority&appName=Agent'
 )
+
+def decide_model(description: str):
+    client = OpenAI()
+    assistant_id = "asst_OaEmnm4mjh7qAfIZXInJxTjf"
+    assistant = client.beta.assistants.retrieve(
+        assistant_id=assistant_id
+    )
+    thread = client.beta.threads.create(
+        messages=[{"role": "user", "content": description}]
+    )
+
+    run = client.beta.threads.runs.create_and_poll(
+        thread_id=thread.id,
+        assistant_id=assistant.id,
+    )
+
+    if run.status == 'completed':
+        messages = client.beta.threads.messages.list(thread_id=thread.id)
+        ai_response = messages.data[0].content[0].text.value
+        options = {
+            '1': ("CLAUDE", AI.CLAUDE),
+            '2': ("GPT", AI.CHATGPT),
+            '3': ("DEEPSEEK", AI.DEEPSEEK),
+        }
+        return options[ai_response[0]]
 
 try:
     # Connect to MongoDB Atlas
@@ -61,13 +88,18 @@ def create_agent():
             message = f"Agent '{agent_name}' already exists."
             status = "exists"
         else:
-            
-            
-            
+            model = decide_model(description)
+            agent = AGENT()
+            agent.name = agent_name
+            agent.model = model[1]
+            agent.description = description
+            main(agent)
+            print(model)
+
             new_agent = {
                 "agentName": agent_name,
                 "description": description,
-                "modelType": model_type,
+                "modelType": model[0],
                 "flag": "default"  # Customize as needed
             }
             result = agents_collection.insert_one(new_agent)

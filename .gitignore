@@ -171,4 +171,4 @@ cython_debug/
 .pypirc
 
 # Ignore GridFS Manager (if you don't want to track it)
-Create-Files/MongoDB/gridfs_manager.py
+Create_Files/MongoDB/gridfs_manager.py
