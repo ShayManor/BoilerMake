@@ -35,6 +35,7 @@ def decide_model(description: str):
             '2': ("GPT", AI.CHATGPT),
             '3': ("DEEPSEEK", AI.DEEPSEEK),
         }
+        print(options[ai_response[0]])
         return options[ai_response[0]]
 
 try:
@@ -94,7 +95,6 @@ def create_agent():
             agent.model = model[1]
             agent.description = description
             main(agent)
-            print(model)
 
             new_agent = {
                 "agentName": agent_name,

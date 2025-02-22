@@ -35,7 +35,7 @@ def main(agent: AGENT):
     with open(os.path.join(agent_folder, "run.sh"), "w") as file:
         file.write(run)
     index = create_index(app, agent.description).replace('```html', '').replace('```', '')
-    with open(os.path.join(agent_folder, "index.html"), "w") as file:
+    with open(os.path.join(agent_folder, "templates/index.html"), "w") as file:
         file.write(index)
 
     create_requirements(agent.path, agent.name)
@@ -47,3 +47,5 @@ def main(agent: AGENT):
 # a.path = "../../Sample-Agents"
 # main(a)
 # print(f"Time taken: {time.time() - t}")
+
+# You are a math teacher who will test students with good questions and tell them why they got it wrong if they do. Make easy, medium, and hard and go from 4th grade to college level math. Make sure these are good questions and it is easy for the user to use.
