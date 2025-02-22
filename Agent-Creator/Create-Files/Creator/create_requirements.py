@@ -1,6 +1,7 @@
 import os
 
-def create_requirements(path):
+
+def create_requirements(path, name):
     # pip install pipreqs
     # pipreqs /path/to/project
     before = os.getcwd()
@@ -8,6 +9,6 @@ def create_requirements(path):
     os.system(f"cd {path}")
     os.system("pip install pipreqs")
     os.system(f"pipreqs .")
-    os.system("mv ../../requirements.txt .")
+    os.system(f"mv requirements.txt {name}/requirements.txt")
     os.chdir(before)
     return True

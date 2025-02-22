@@ -1,0 +1,214 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary Builder</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f6f8;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            background: #4a90e2;
+            color: white;
+            padding: 20px 40px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2em;
+        }
+        main {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+        .word {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #4a90e2;
+        }
+        .choices {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+        .choices li {
+            margin: 10px 0;
+        }
+        .choices button {
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 1em;
+            border: 2px solid #4a90e2;
+            border-radius: 5px;
+            background: white;
+            color: #4a90e2;
+            cursor: pointer;
+            transition: background 0.3s, color 0.3s;
+        }
+        .choices button:hover {
+            background: #4a90e2;
+            color: white;
+        }
+        .feedback {
+            margin-top: 20px;
+            font-size: 1.1em;
+        }
+        .stats {
+            margin-top: 30px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            max-width: 300px;
+            width: 100%;
+        }
+        .stats h2 {
+            margin-top: 0;
+            color: #4a90e2;
+        }
+        .stats p {
+            margin: 10px 0;
+            font-size: 1em;
+        }
+        footer {
+            background: #4a90e2;
+            color: white;
+            text-align: center;
+            padding: 15px 40px;
+            position: relative;
+        }
+        @media (max-width: 600px) {
+            main {
+                padding: 20px;
+            }
+            .card {
+                padding: 20px;
+            }
+            .choices button {
+                font-size: 0.9em;
+                padding: 10px 15px;
+            }
+            .stats {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Vocabulary Builder</h1>
+    </header>
+    <main>
+        <div class="card">
+            <div class="word" id="word">Loading...</div>
+            <ul class="choices" id="choices">
+                <!-- Choices will be populated here -->
+            </ul>
+            <div class="feedback" id="feedback"></div>
+            <button id="nextButton" style="display:none; margin-top:20px; padding:10px 20px; font-size:1em; border:none; border-radius:5px; background:#4a90e2; color:white; cursor:pointer;">Next Question</button>
+        </div>
+        <div class="stats">
+            <h2>Your Stats</h2>
+            <p>Correct: <span id="correct">0</span></p>
+            <p>Incorrect: <span id="incorrect">0</span></p>
+        </div>
+    </main>
+    <footer>
+        &copy; 2023 Vocabulary Builder
+    </footer>
+    <script>
+        const apiBase = 'http://localhost:5000/api';
+        const wordElement = document.getElementById('word');
+        const choicesElement = document.getElementById('choices');
+        const feedbackElement = document.getElementById('feedback');
+        const correctElement = document.getElementById('correct');
+        const incorrectElement = document.getElementById('incorrect');
+        const nextButton = document.getElementById('nextButton');
+
+        let currentChoices = [];
+
+        async function fetchQuestion() {
+            feedbackElement.textContent = '';
+            nextButton.style.display = 'none';
+            try {
+                const response = await fetch(`${apiBase}/get_question`);
+                const data = await response.json();
+                wordElement.textContent = data.word;
+                currentChoices = data.choices;
+                renderChoices(data.choices);
+            } catch (error) {
+                wordElement.textContent = 'Error loading question.';
+            }
+        }
+
+        function renderChoices(choices) {
+            choicesElement.innerHTML = '';
+            choices.forEach(choice => {
+                const li = document.createElement('li');
+                const button = document.createElement('button');
+                button.textContent = choice;
+                button.onclick = () => submitAnswer(choice);
+                li.appendChild(button);
+                choicesElement.appendChild(li);
+            });
+        }
+
+        async function submitAnswer(answer) {
+            try {
+                const response = await fetch(`${apiBase}/submit_answer`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({answer})
+                });
+                const data = await response.json();
+                if (data.success) {
+                    feedbackElement.textContent = data.message;
+                    await fetchStats();
+                    nextButton.style.display = 'block';
+                }
+            } catch (error) {
+                feedbackElement.textContent = 'Error submitting answer.';
+            }
+        }
+
+        async function fetchStats() {
+            try {
+                const response = await fetch(`${apiBase}/get_stats`);
+                const data = await response.json();
+                correctElement.textContent = data.correct;
+                incorrectElement.textContent = data.incorrect;
+            } catch (error) {
+                // Handle error silently
+            }
+        }
+
+        nextButton.addEventListener('click', fetchQuestion);
+
+        // Initialize
+        fetchQuestion();
+        fetchStats();
+    </script>
+</body>
+</html>

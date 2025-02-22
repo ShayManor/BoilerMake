@@ -1,4 +1,5 @@
 import os
+import time
 
 from enums import *
 from create_ask_ai import create_ask_ai
@@ -17,24 +18,25 @@ def main(agent: AGENT):
     os.system(f"mkdir {agent.name}/templates")
     os.chdir(before)
     ask_ai = create_ask_ai(agent.model)
-    with open(f"{agent.path}/bread-seller-predictor/ask_ai.py", "w") as file:
+    with open(f"{agent.path}/{agent.name}/ask_ai.py", "w") as file:
         file.write(ask_ai)
     app = create_app(agent.description).replace('```python', '').replace('```', '')
-    with open(f"{agent.path}/bread-seller-predictor/app.py", "w") as file:
+    with open(f"{agent.path}/{agent.name}/app.py", "w") as file:
         file.write(app)
 
-    run = create_run(app)
-    with open(f"{agent.path}/bread-seller-predictor/run.sh", "w") as file:
+    run = create_run(app).replace('```bash', '').replace('```', '')
+    with open(f"{agent.path}/{agent.name}/run.sh", "w") as file:
         file.write(run)
     index = create_index(app, agent.description).replace('```html', '').replace('```', '')
-    with open(f"{agent.path}/bread-seller-predictor/templates/index.html", "w") as file:
+    with open(f"{agent.path}/{agent.name}/templates/index.html", "w") as file:
         file.write(index)
 
-    create_requirements(agent.path)
+    create_requirements(agent.path, agent.name)
 
-
+t = time.time()
 a = AGENT()
-a.name = "bread-seller-predictor"
-a.description = "A bread seller has a csv of how much bread they sell every day. They need an agent that will take the csv file, let him upload it, and tell him how much bread to product the next day to keep up with demand. This should be simple for the end user and they only need to see the prediction."
+a.name = "vocabulary-teacher"
+a.description = "You are a teacher to teach users new words and improve their vocabulary. You will get a long list of hard words (from an api or otherwise generated with the ai) and you will give definitions and test the user with multiple choice questions, explaining when they get something wrong. Also you should have user statistics for the current session that can be shown. Ensure concise explanations."
 a.path = "../../Sample-Agents"
 main(a)
+print(f"Time taken: {time.time() - t}")

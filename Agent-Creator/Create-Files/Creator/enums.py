@@ -17,4 +17,4 @@ class AGENT:
     name = ''
     description = ''
     model = AI.CHATGPT
-    path = f'Agent-Creator/Sample-Agents/{name}'
+    path = "../../Sample-Agents"
