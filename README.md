@@ -2,7 +2,7 @@
 TOMORROW: we show up 9
 Elan - data compiling - schema for mongodb
 Sean - Frontend - AWS schemas
-Shay - Make AI agent - sync with Elan - Sync with frontend
+Shay - Make templates - Make AI agent - sync with Elan - Sync with frontend
 
 1 function of the website will have a repository using mongodb that holds all the different AI agents.
 
