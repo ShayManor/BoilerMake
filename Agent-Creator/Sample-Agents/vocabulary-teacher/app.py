@@ -1,17 +1,15 @@
 from flask import Flask, render_template, request, send_from_directory
 from flask_cors import CORS
 
-app = Flask(__name__)
-CORS(app)
-
-
 from flask import jsonify, session
 from flask import Flask, render_template, request, send_from_directory, jsonify, session
 from flask_cors import CORS
 import random
 from ask_ai import ask_ai
 
-app.secret_key = 'your_secret_key_here'
+app = Flask(__name__)
+CORS(app)
+
 
 def get_words():
     prompt = "Generate a list of 100 advanced English words with their definitions in JSON format."
@@ -29,11 +27,14 @@ def get_words():
                     words.append({'word': word.strip(), 'definition': definition.strip()})
     return words
 
+
 WORDS = get_words()
+
 
 def init_stats():
     if 'stats' not in session:
         session['stats'] = {'correct': 0, 'incorrect': 0}
+
 
 @app.route("/api/get_question", methods=["GET"])
 def get_question():
@@ -49,6 +50,7 @@ def get_question():
     random.shuffle(choices)
     session['current_question'] = {'word': word['word'], 'definition': correct_definition}
     return jsonify({'word': word['word'], 'choices': choices})
+
 
 @app.route("/api/submit_answer", methods=["POST"])
 def submit_answer():
@@ -67,6 +69,7 @@ def submit_answer():
         message = f"Incorrect. The correct definition is: {correct_def}"
     session.pop('current_question', None)
     return jsonify({'success': True, 'correct': answer == correct_def, 'message': message})
+
 
 @app.route("/api/get_stats", methods=["GET"])
 def get_stats():

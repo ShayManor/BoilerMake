@@ -1,6 +1,8 @@
 import os
 import time
 
+from openai import OpenAI
+
 from enums import *
 from create_ask_ai import create_ask_ai
 from create_requirements import create_requirements
@@ -8,8 +10,35 @@ from create_app import create_app
 from create_run import create_run
 from create_index import create_index
 
+def decide_model(description: str) -> AI:
+    client = OpenAI()
+    assistant_id = "asst_OaEmnm4mjh7qAfIZXInJxTjf"
+    assistant = client.beta.assistants.retrieve(
+        assistant_id=assistant_id
+    )
+    thread = client.beta.threads.create(
+        messages=[{"role": "user", "content": description}]
+    )
+
+    run = client.beta.threads.runs.create_and_poll(
+        thread_id=thread.id,
+        assistant_id=assistant.id,
+    )
+
+    if run.status == 'completed':
+        messages = client.beta.threads.messages.list(thread_id=thread.id)
+        ai_response = messages.data[0].content[0].text.value
+        options = {
+            '1': AI.CLAUDE,
+            '2': AI.CHATGPT,
+            '3': AI.DEEPSEEK,
+        }
+        return options[ai_response[0]]
 
 def main(agent: AGENT):
+    agent.model = decide_model(agent.description)
+    print(agent.model)
+    exit(0)
     before = os.getcwd()
     os.chdir(os.path.join(os.getcwd(), agent.path))
     os.system(f"cd {agent.path}")
