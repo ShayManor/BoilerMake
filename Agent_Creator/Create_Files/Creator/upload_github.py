@@ -13,7 +13,6 @@ def get_github_credentials():
     Returns:
         tuple: A tuple containing the username and token (username, token)
     """
-    # Retrieve the token using `gh auth token`
     token_process = subprocess.run(
         ['gh', 'auth', 'token'],
         stdout=subprocess.PIPE,
@@ -22,7 +21,6 @@ def get_github_credentials():
     )
     token = token_process.stdout.strip()
 
-    # Retrieve user info (which contains the username) using `gh api user`
     user_process = subprocess.run(
         ['gh', 'api', 'user'],
         stdout=subprocess.PIPE,
@@ -48,27 +46,21 @@ def upload_to_github(filepath: str) -> str:
         str: The public clone URL of the newly created repository.
     """
     github_username, github_token = get_github_credentials()
-    # Derive a repository name from the folder name.
     repo_name = os.path.basename(os.path.normpath(filepath))
 
-    # Initialize the GitHub client and create the repo.
     g = Github(github_token)
     user = g.get_user()
     repo = user.create_repo(repo_name)
 
-    # Initialize a git repository if one does not exist.
     if not os.path.exists(os.path.join(filepath, '.git')):
         subprocess.run(['git', 'init'], cwd=filepath, check=True)
 
-    # Add all files and make an initial commit.
     subprocess.run(['git', 'add', '.'], cwd=filepath, check=True)
-    # The commit command might fail if there's nothing to commit, so we wrap it in a try/except.
     try:
         subprocess.run(['git', 'commit', '-m', 'Initial commit'], cwd=filepath, check=True)
     except subprocess.CalledProcessError:
-        pass  # This is okay if there are no changes to commit.
+        pass
 
-    # Remove an existing 'origin' remote if it exists.
     remotes = subprocess.run(
         ['git', 'remote'], cwd=filepath, check=True, stdout=subprocess.PIPE, text=True
     ).stdout.strip().splitlines()
@@ -89,9 +81,6 @@ def upload_to_github(filepath: str) -> str:
 
 # Example usage:
 if __name__ == "__main__":
-    # Replace these with your actual GitHub username and personal access token.
-
-    # Path to your local agent folder (e.g., "Sample-Agents/agent1")
     local_agent_path = "../../Sample-Agents/template"
 
     repo_url = upload_to_github(local_agent_path)
