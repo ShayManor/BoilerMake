@@ -6,7 +6,15 @@ class AI(Enum):
     CLAUDE = 'Claude.py'
     DEEPSEEK = 'DeepSeek.py'
 
+
 class ASSISTANTS(Enum):
     BASH_CREATOR = 'asst_nLZzDR6BjhI74Vu6Ep7PN5lz'
     APP_LIST_METHODS = ''
     APP_FILL_METHODS = ''
+
+
+class AGENT:
+    name = ''
+    description = ''
+    model = AI.CHATGPT
+    path = f'Agent-Creator/Sample-Agents/{name}'
