@@ -28,6 +28,7 @@ def predict_next_sales(csv_file) -> str:
     try:
         # Convert the column values to numeric, dropping non-numeric entries
         sales_data = pd.to_numeric(df[sales_col], errors='coerce').dropna().tolist()
+        print(sales_data)
     except Exception as e:
         return f"Error processing sales column: {e}"
 

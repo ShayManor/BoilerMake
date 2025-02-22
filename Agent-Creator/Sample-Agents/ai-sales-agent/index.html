@@ -33,14 +33,10 @@
         <h2>AI Sales Predictor</h2>
       </div>
       <div class="card-body">
-        {% if error %}
           <div class="alert alert-danger">{{ error }}</div>
-        {% endif %}
-        {% if prediction %}
           <div class="alert alert-success">
             <strong>Prediction:</strong> {{ prediction }}
           </div>
-        {% endif %}
         <form method="post" enctype="multipart/form-data">
           <div class="mb-3">
             <label for="file" class="form-label">Upload CSV File</label>
