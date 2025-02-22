@@ -1,4 +1,6 @@
-from flask import Flask, render_template, request
+import os
+
+from flask import Flask, render_template, request, send_file
 from predict import predict_next_sales
 
 app = Flask(__name__)
