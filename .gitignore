@@ -169,3 +169,6 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Ignore GridFS Manager (if you don't want to track it)
+Create-Files/MongoDB/gridfs_manager.py
