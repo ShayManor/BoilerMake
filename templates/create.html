@@ -22,7 +22,7 @@
           </a>
           <div class="hidden sm:flex sm:ml-10 space-x-8">
             <a href="/create" class="border-b-2 border-indigo-500 text-lg font-semibold text-gray-900 px-1 py-2 hover:text-indigo-600 transition">Create</a>
-            <a href="/discover" class="border-b-2 border-transparent text-lg font-semibold text-gray-900 px-1 py-2 hover:text-indigo-600 transition">Discover</a>
+            <a href="/agents" class="border-b-2 border-transparent text-lg font-semibold text-gray-900 px-1 py-2 hover:text-indigo-600 transition">Discover</a>
           </div>
         </div>
         <!-- Mobile menu toggle, notifications, and profile -->
@@ -44,7 +44,7 @@
     <div class="sm:hidden hidden" id="mobile-menu">
       <div class="px-2 pt-2 pb-3 space-y-1">
         <a href="/create" class="block border-l-4 border-indigo-500 bg-indigo-50 text-gray-900 px-3 py-2 text-base font-medium">Create</a>
-        <a href="/discover" class="block border-l-4 border-transparent text-gray-900 hover:bg-indigo-50 hover:border-indigo-600 hover:text-indigo-600 px-3 py-2 text-base font-medium">Discover</a>
+        <a href="/agents" class="block border-l-4 border-transparent text-gray-900 hover:bg-indigo-50 hover:border-indigo-600 hover:text-indigo-600 px-3 py-2 text-base font-medium">Discover</a>
       </div>
     </div>
   </nav>
@@ -69,7 +69,7 @@
       </div>
     </div>
     <!-- Initial Form: Agent Name and Description -->
-    <div id="initialForm" class="max-w-lg mx-auto bg-white p-8 mb-28 rounded-lg shadow-lg">
+    <div id="initialForm" class=" bg-indigo-100 max-w-lg mx-auto p-8 mb-28 rounded-lg shadow-lg">
       <h2 class="text-3xl font-bold mb-6 text-center">Create Your AI Agent</h2>
       <form id="agentForm" class="space-y-6">
         <div>
@@ -91,7 +91,7 @@
       </form>
     </div>
     <!-- Chat Interface (initially hidden) -->
-    <div id="chatContainer" class="max-w-2xl mx-auto mt-8 bg-white p-6 rounded-lg shadow-lg hidden">
+    <div id="chatContainer" class="max-w-2xl mx-auto mt-8  bg-indigo-100 p-6 rounded-lg shadow-lg hidden">
       <div id="chatLog" class="space-y-4 mb-4">
         <!-- Chat messages will appear here -->
       </div>
@@ -108,11 +108,11 @@
   </main>
  
    <!-- Footer -->
-   <footer class="bg-white">
+   <footer class="bg-white mt-10">
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
       <nav class="flex justify-center gap-x-12" aria-label="Footer">
-        <a href="/agents" class="text-lg font-semibold text-gray-900 hover:text-indigo-600 transition">Discover</a>
         <a href="/create" class="text-lg font-semibold text-gray-900 hover:text-indigo-600 transition">Create</a>
+        <a href="/agent" class="text-lg font-semibold text-gray-900 hover:text-indigo-600 transition">Discover</a>
       </nav>
       <p class="mt-10 text-center text-lg font-bold text-gray-500">
         &copy; 2025 Smith AI. All rights reserved.
@@ -155,7 +155,7 @@
       // Append the user's initial description to the chat log
       const userMsg = document.createElement('div');
       userMsg.className = "text-right";
-      userMsg.innerHTML = `<span class="inline-block bg-indigo-500 px-4 py-2 rounded-lg">${description}</span>`;
+      userMsg.innerHTML = `<span class="inline-block bg-[#007AFF] px-4 py-2 text-white rounded-lg">${description}</span>`;
       chatLog.appendChild(userMsg);
 
       // Start the conversation by sending the agent name and description to the backend.
@@ -169,7 +169,7 @@
         conversationId = data.conversationId;
         const aiMsg = document.createElement('div');
         aiMsg.className = "text-left";
-        aiMsg.innerHTML = `<span class="inline-block bg-gray-700 px-4 py-2 rounded-lg">${data.question}</span>`;
+        aiMsg.innerHTML = `<span class="inline-block bg-gray-400 px-4 py-2 rounded-lg">${data.question}</span>`;
         chatLog.appendChild(aiMsg);
       })
       .catch(error => {

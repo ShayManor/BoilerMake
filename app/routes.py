@@ -10,21 +10,14 @@ bp = Blueprint('main', __name__)
 def index():
     return render_template('index.html')
 
-@bp.route('/discover')
-def discover():
-    return render_template('discover.html')
-
 @bp.route('/create')
 def create_page():
     return render_template('create.html')
 
-@bp.route('/about')
-def about():
-    return render_template('about.html')
-
-@bp.route('/support')
-def support():
-    return render_template('support.html')
+# Commented out unless needed
+# @bp.route('/about')
+# def about():
+#     return render_template('about.html')
 
 @bp.route('/create_agent', methods=['POST'])
 def create_agent():

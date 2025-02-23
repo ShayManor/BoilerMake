@@ -13,7 +13,7 @@
       <nav class="relative flex items-center justify-center p-6 lg:px-8" aria-label="Global">
         <!-- Logo placed to the left -->
         <div class="absolute left-10 flex lg:flex-1">
-          <a href="#" class="-m-1.5 p-1.5">
+          <a href="/" class="-m-1.5 p-1.5">
             <span class="sr-only">Smith AI</span>
             <!-- Increased size and bold style for the SVG logo -->
             <svg class="w-12 h-12" viewBox="0 0 24 24" fill="black" xmlns="http://www.w3.org/2000/svg">
@@ -32,8 +32,8 @@
         </div>
         <!-- Centered navigation items -->
         <div class="hidden lg:flex gap-x-12">
-          <a href="/agents" class="text-lg font-semibold text-gray-900 hover:text-indigo-600 transition">Discover</a>
           <a href="/create" class="text-lg font-semibold text-gray-900 hover:text-indigo-600 transition">Create</a>
+          <a href="/agents" class="text-lg font-semibold text-gray-900 hover:text-indigo-600 transition">Discover</a>
         </div>
       </nav>
       <!-- Mobile Menu -->
@@ -55,8 +55,8 @@
             </button>
           </div>
           <div class="mt-6 flex flex-col space-y-4">
-            <a href="/agents" class="text-lg font-semibold text-gray-900 hover:text-indigo-600 transition">Discover</a>
             <a href="/create" class="text-lg font-semibold text-gray-900 hover:text-indigo-600 transition">Create</a>
+            <a href="/agents" class="text-lg font-semibold text-gray-900 hover:text-indigo-600 transition">Discover</a>
           </div>
         </div>
       </div>
@@ -79,7 +79,7 @@
           <a href="/create" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-lg font-bold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition">
             Get started
           </a>
-          <a href="/about" class="text-lg font-bold text-gray-900 hover:text-indigo-600 transition">
+          <a href="/agents" class="text-lg font-bold text-gray-900 hover:text-indigo-600 transition">
             Learn more <span aria-hidden="true">→</span>
           </a>
         </div>
@@ -90,18 +90,26 @@
       </div>
     </main>
 
+
+
+
+
     <!-- Footer -->
-    <footer class="bg-white">
-      <div class="mx-auto max-w-7xl px-6 lg:px-8">
-        <nav class="flex justify-center gap-x-12" aria-label="Footer">
-          <a href="/agents" class="text-lg font-semibold text-gray-900 hover:text-indigo-600 transition">Discover</a>
-          <a href="/create" class="text-lg font-semibold text-gray-900 hover:text-indigo-600 transition">Create</a>
-        </nav>
-        <p class="mt-10 text-center text-lg font-bold text-gray-500">
-          &copy; 2025 Smith AI. All rights reserved.
-        </p>
-      </div>
-    </footer>
+    <!-- Footer at the Top of the Page -->
+<!-- Footer Placed at the Front of the Page -->
+<div class="relative z-50 w-full">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <nav class="flex justify-center gap-x-12" aria-label="Footer">
+      <a href="/create" class="text-lg font-semibold text-gray-900 hover:text-indigo-600 transition">Create</a>
+      <a href="/agents" class="text-lg font-semibold text-gray-900 hover:text-indigo-600 transition">Discover</a>
+    </nav>
+    <p class="mt-4 text-center text-lg font-bold text-gray-500">
+      &copy; 2025 Smith AI. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
   </div>
 
   <!-- JavaScript for Navbar Toggle -->
