@@ -5,6 +5,7 @@ class AI(Enum):
     CHATGPT = 'GPT.py'
     CLAUDE = 'GPT.py'
     DEEPSEEK = 'DeepSeek.py'
+    GEMINI = 'Gemini.py'
 
 
 class ASSISTANTS(Enum):
