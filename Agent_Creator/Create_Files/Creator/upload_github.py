@@ -81,7 +81,7 @@ def upload_to_github(filepath: str) -> str:
 
 # Example usage:
 if __name__ == "__main__":
-    local_agent_path = "../../Sample-Agents/template"
+    local_agent_path = "../../Sample-Agents/math-practice-generator"
 
     repo_url = upload_to_github(local_agent_path)
     print("Repository created at:", repo_url)
