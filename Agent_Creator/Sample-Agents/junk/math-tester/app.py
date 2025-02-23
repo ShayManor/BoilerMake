@@ -136,7 +136,7 @@ def check_answer_route():
 
 @app.route("/", methods=["GET"])
 def index():
-    return send_from_directory(".", "templates/index.html")
+    return send_from_directory("", "templates/index.html")
 
 
 if __name__ == "__main__":

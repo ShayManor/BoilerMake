@@ -3,60 +3,162 @@
 <head>
   <meta charset="UTF-8">
   <title>Create AI Agent</title>
+  <!-- Include Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-900 text-white">
+  <!-- Header -->
   <header class="p-4 bg-gray-800">
     <div class="container mx-auto">
       <h1 class="text-xl font-bold">Create Your AI Agent</h1>
     </div>
   </header>
-  <main class="flex items-center justify-center min-h-screen">
-    <div class="w-full max-w-lg p-8 bg-gray-800 rounded-lg shadow-lg">
-      <h1 class="text-3xl font-bold mb-6 text-center">Create Your AI Agent</h1>
+  <!-- Main Section -->
+  <main class="container mx-auto p-4">
+    <!-- Initial Form: Agent Name and Description -->
+    <div id="initialForm" class="max-w-lg mx-auto bg-gray-800 p-8 rounded-lg shadow-lg">
+      <h2 class="text-3xl font-bold mb-6 text-center">Create Your AI Agent</h2>
       <form id="agentForm" class="space-y-6">
         <div>
           <label for="agentName" class="block text-sm font-medium text-gray-300">Agent Name</label>
-          <input type="text" id="agentName" name="agentName" required class="mt-1 block w-full rounded-md border-gray-700 bg-gray-700 px-3 py-2 text-white focus:border-indigo-500 focus:ring-indigo-500">
+          <input type="text" id="agentName" name="agentName" required
+                 class="mt-1 block w-full rounded-md border-gray-700 bg-gray-700 px-3 py-2 text-white focus:border-indigo-500 focus:ring-indigo-500">
         </div>
         <div>
           <label for="description" class="block text-sm font-medium text-gray-300">Description</label>
-          <textarea id="description" name="description" required class="mt-1 block w-full rounded-md border-gray-700 bg-gray-700 px-3 py-2 text-white focus:border-indigo-500 focus:ring-indigo-500"></textarea>
+          <textarea id="description" name="description" required
+                    class="mt-1 block w-full rounded-md border-gray-700 bg-gray-700 px-3 py-2 text-white focus:border-indigo-500 focus:ring-indigo-500"></textarea>
         </div>
         <div>
-          <label for="modelType" class="block text-sm font-medium text-gray-300">Model Type</label>
-          <input type="text" id="modelType" name="modelType" placeholder="e.g., GPT-3, BERT, etc." required class="mt-1 block w-full rounded-md border-gray-700 bg-gray-700 px-3 py-2 text-white focus:border-indigo-500 focus:ring-indigo-500">
-        </div>
-        <div>
-          <button type="submit" class="w-full rounded-md bg-indigo-500 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
-            Create Agent
+          <button type="submit"
+                  class="w-full rounded-md bg-indigo-500 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-indigo-400 transition">
+            Start Creation
           </button>
         </div>
       </form>
-      <div id="result" class="mt-4 text-center text-sm text-gray-300"></div>
+    </div>
+    <!-- Chat Interface (initially hidden) -->
+    <div id="chatContainer" class="max-w-2xl mx-auto mt-8 bg-gray-800 p-6 rounded-lg shadow-lg hidden">
+      <div id="chatLog" class="space-y-4 mb-4">
+        <!-- Chat messages will appear here -->
+      </div>
+      <form id="chatForm" class="flex space-x-4">
+        <input type="text" id="chatInput" placeholder="Type your answer here..." required
+               class="flex-grow rounded-md border-gray-700 bg-gray-700 px-3 py-2 text-white focus:border-indigo-500 focus:ring-indigo-500">
+        <button type="submit"
+                class="rounded-md bg-indigo-500 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-indigo-400 transition">
+          Send
+        </button>
+      </form>
     </div>
   </main>
-
+  <!-- Footer -->
+  <footer class="bg-gray-900">
+    <div class="mx-auto max-w-7xl overflow-hidden px-6 pt-10 pb-6 lg:px-8">
+      <nav class="-mb-6 flex flex-wrap justify-center gap-x-12 gap-y-3 text-sm" aria-label="Footer">
+        <a href="/agents" class="text-gray-400 hover:text-white transition">Discover</a>
+        <a href="/create" class="text-gray-400 hover:text-white transition">Create</a>
+        <a href="/about" class="text-gray-400 hover:text-white transition">About</a>
+        <a href="/support" class="text-gray-400 hover:text-white transition">Support</a>
+      </nav>
+      <p class="mt-10 text-center text-sm text-gray-400">
+        &copy; 2025 Your Company, Inc. All rights reserved.
+      </p>
+    </div>
+  </footer>
+  <!-- JavaScript for Interactive Chat -->
   <script>
-    document.getElementById('agentForm').addEventListener('submit', function(e) {
+    // References to DOM elements
+    const agentForm = document.getElementById('agentForm');
+    const chatContainer = document.getElementById('chatContainer');
+    const chatLog = document.getElementById('chatLog');
+    const chatForm = document.getElementById('chatForm');
+    const chatInput = document.getElementById('chatInput');
+
+    // Variables to store conversation context
+    let conversationId = null;
+    let agentName = "";
+
+    // Handle initial agent creation form submission
+    agentForm.addEventListener('submit', function(e) {
       e.preventDefault();
-      const agentName = document.getElementById('agentName').value;
+      agentName = document.getElementById('agentName').value;
       const description = document.getElementById('description').value;
-      const modelType = document.getElementById('modelType').value;
+
+      // Hide the initial form and show the chat interface
+      document.getElementById('initialForm').classList.add('hidden');
+      chatContainer.classList.remove('hidden');
+
+      // Append the user's initial description to the chat log
+      const userMsg = document.createElement('div');
+      userMsg.className = "text-right";
+      userMsg.innerHTML = `<span class="inline-block bg-indigo-500 px-4 py-2 rounded-lg">${description}</span>`;
+      chatLog.appendChild(userMsg);
+
+      // Start the conversation by sending the agent name and description to the backend.
       fetch('/create_agent', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ agentName, description, modelType })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ agentName, description })
       })
       .then(response => response.json())
       .then(data => {
-        document.getElementById('result').innerText = data.message || data.error;
+        // Expect the response to include a conversationId and an initial question from the AI.
+        conversationId = data.conversationId;
+        const aiMsg = document.createElement('div');
+        aiMsg.className = "text-left";
+        aiMsg.innerHTML = `<span class="inline-block bg-gray-700 px-4 py-2 rounded-lg">${data.question}</span>`;
+        chatLog.appendChild(aiMsg);
       })
       .catch(error => {
         console.error('Error:', error);
-        document.getElementById('result').innerText = 'An error occurred.';
+        const errorMsg = document.createElement('div');
+        errorMsg.className = "text-left text-red-500";
+        errorMsg.textContent = "An error occurred starting the conversation.";
+        chatLog.appendChild(errorMsg);
+      });
+    });
+
+    // Handle subsequent chat input submissions
+    chatForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const userAnswer = chatInput.value;
+      chatInput.value = "";
+
+      // Append the user's answer to the chat log
+      const userMsg = document.createElement('div');
+      userMsg.className = "text-right";
+      userMsg.innerHTML = `<span class="inline-block bg-indigo-500 px-4 py-2 rounded-lg">${userAnswer}</span>`;
+      chatLog.appendChild(userMsg);
+
+      // Send the user's answer along with conversationId to continue the conversation.
+      fetch('/create_agent/continue', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ conversationId, answer: userAnswer })
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Append the AI's response to the chat log.
+        const aiMsg = document.createElement('div');
+        aiMsg.className = "text-left";
+        aiMsg.innerHTML = `<span class="inline-block bg-gray-700 px-4 py-2 rounded-lg">${data.message}</span>`;
+        chatLog.appendChild(aiMsg);
+        // If the conversation is finished, disable further input.
+        if (data.finished) {
+          chatInput.disabled = true;
+          const finalMsg = document.createElement('div');
+          finalMsg.className = "text-center text-green-400 mt-4";
+          finalMsg.textContent = "Your AI Agent has been created!";
+          chatLog.appendChild(finalMsg);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        const errorMsg = document.createElement('div');
+        errorMsg.className = "text-left text-red-500";
+        errorMsg.textContent = "An error occurred. Please try again.";
+        chatLog.appendChild(errorMsg);
       });
     });
   </script>
