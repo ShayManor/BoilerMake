@@ -172,3 +172,7 @@ cython_debug/
 
 # Ignore GridFS Manager (if you don't want to track it)
 Create_Files/MongoDB/gridfs_manager.py
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
