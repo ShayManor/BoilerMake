@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Meal Prep AI Agent</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f9f9f9;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background: #007BFF;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .result {
+            background: #eef;
+            padding: 10px;
+            margin-top: 15px;
+            border: 1px solid #ccd;
+            border-radius: 4px;
+        }
+        .meal-option {
+            cursor: pointer;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+        .meal-option:hover {
+            background: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Meal Prep AI Agent</h1>
+        <p>
+            Enter your dietary preferences and macro goals below to get simple meal options. Click an option to generate a detailed recipe.
+        </p>
+
+        <!-- User Preferences Form -->
+        <div class="section">
+            <h2>Enter Your Preferences</h2>
+            <form id="preferencesForm">
+                <label for="dietary_preferences">Dietary Preferences (e.g., vegetarian, vegan, paleo, etc.):</label>
+                <input type="text" id="dietary_preferences" name="dietary_preferences" placeholder="e.g., vegetarian" value="vegetarian">
+
+                <label for="macro_goals">Macro Goals (e.g., high protein, low carb, balanced, etc.):</label>
+                <input type="text" id="macro_goals" name="macro_goals" placeholder="e.g., high protein, low carb" value="high protein, low carb">
+
+                <button type="submit">Get Meal Options</button>
+            </form>
+        </div>
+
+        <!-- Meal Options Display -->
+        <div class="section" id="optionsSection" style="display: none;">
+            <h2>Meal Options</h2>
+            <div id="mealOptions" class="result"></div>
+        </div>
+
+        <!-- Recipe Display -->
+        <div class="section" id="recipeSection" style="display: none;">
+            <h2>Recipe</h2>
+            <div id="recipeResult" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        // Handle the submission of dietary preferences to get meal options.
+        document.getElementById('preferencesForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+            fetch('/meal_options', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('optionsSection').style.display = 'block';
+                var mealOptionsDiv = document.getElementById('mealOptions');
+                mealOptionsDiv.innerHTML = '';
+                // Split the numbered list into individual options.
+                var options = data.options.split('\n').filter(opt => opt.trim() !== '');
+                options.forEach(function(option) {
+                    var div = document.createElement('div');
+                    div.className = 'meal-option';
+                    div.innerText = option;
+                    // When the user clicks an option, request a detailed recipe.
+                    div.addEventListener('click', function() {
+                        var params = new URLSearchParams();
+                        params.append('meal_option', option);
+                        fetch('/generate_recipe', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                            body: params.toString()
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            document.getElementById('recipeSection').style.display = 'block';
+                            document.getElementById('recipeResult').innerText = data.recipe;
+                        })
+                        .catch(error => console.error('Error:', error));
+                    });
+                    mealOptionsDiv.appendChild(div);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>

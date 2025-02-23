@@ -9,6 +9,7 @@ from .create_requirements import create_requirements
 from .create_app import create_app
 from .create_run import create_run
 from .create_index import create_index
+from .upload_github import upload_to_github
 
 
 def main(agent: AGENT):
@@ -39,6 +40,7 @@ def main(agent: AGENT):
         file.write(index)
 
     create_requirements(agent.path, agent.name)
+    git_link = upload_to_github(agent_abs_path)
 
 # t = time.time()
 # a = AGENT()
