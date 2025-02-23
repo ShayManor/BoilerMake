@@ -103,9 +103,20 @@
               const li = document.createElement('li');
               li.className = "col-span-1 rounded-lg bg-white p-6 shadow hover:shadow-xl transition transform hover:scale-105 bg-indigo-100";
 
-              li.innerHTML = `
-                <div class="flex items-center space-x-4 ">
-                  <img class="h-12 w-12 rounded-full object-cover" src="https://via.placeholder.com/150" alt="Agent Avatar">
+              // Create a button that wraps the content.
+              const button = document.createElement('button');
+              button.type = "button";
+              button.className = "w-full text-left focus:outline-none";
+              button.onclick = () => { window.location.href = agent.FRN; };
+
+              button.innerHTML = `
+                <div class="flex items-center space-x-4">
+                  <img
+                    class="h-12 w-12 rounded-full object-cover"
+                    src="${agent.avatarUrl}"
+                    alt="Agent Avatar"
+                    onerror="this.onerror=null; this.src='https://via.placeholder.com/150';"
+                  >
                   <div>
                     <h3 class="text-lg font-semibold text-gray-900">${agent.agentName}</h3>
                     <p class="text-sm text-gray-600">${agent.modelType || "Model"}</p>
@@ -113,6 +124,8 @@
                 </div>
                 <p class="mt-4 text-gray-700">${agent.description}</p>
               `;
+
+              li.appendChild(button);
               agentsList.appendChild(li);
             });
           } else {

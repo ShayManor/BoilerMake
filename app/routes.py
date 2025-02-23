@@ -74,13 +74,18 @@ def continue_conversation():
             agent = AGENT()
             agent.name = agent_info["agentName"]
             agent.description = agent_info["description"]
+            agent.avatarUrl = "avatarUrl"
+            agent.FRN = "frn"
+            agent.modelType = agent_info["modelType"]
             main(agent)
 
             # Insert the new agent into MongoDB.
             new_agent = {
                 "agentName": agent.name,
                 "description": agent.description,
-                "modelType": "chatGPT",
+                "modelType": agent.modelType,
+                "avatarUrl": agent.avatarUrl,
+                "FRN": agent.FRN,
                 "flag": "default"
             }
             agents_collection.insert_one(new_agent)
