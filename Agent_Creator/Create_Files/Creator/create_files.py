@@ -45,8 +45,8 @@ def main(agent: AGENT):
 
 # t = time.time()
 # a = AGENT()
-# a.name = "vocabulary-teacher"
-# a.description = "You are a teacher to teach users new words and improve their vocabulary. You will get a long list of hard words (from an api or otherwise generated with the ai) and you will give definitions and test the user with multiple choice questions, explaining when they get something wrong. Also you should have user statistics for the current session that can be shown. Ensure concise explanations."
+# a.name = "bread-seller-predictor"
+# a.description = "You are a essay writing helper who will give good feedback to improve and contain a text editor to get quick live changes. There should be a screen that I can put in an essay (as well as an example to test) and I should get help on it to improve."
 # a.path = "../../Sample-Agents"
 # main(a)
 # print(f"Time taken: {time.time() - t}")
