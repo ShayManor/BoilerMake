@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, jsonify
 import uuid
-from application import agents_collection, conversation_data, gpt, QUESTION_ASKER_ID
+from app.extensions import agents_collection, conversation_data, gpt, QUESTION_ASKER_ID
 from Helpers.Creator.create_files import main
 from Helpers.Creator.enums import AGENT
 
@@ -57,7 +57,6 @@ def create_agent():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
 @bp.route('/create_agent/continue', methods=['POST'])
 def continue_conversation():
     try:
@@ -69,7 +68,6 @@ def continue_conversation():
 
         # Pass the entire chat log to GPT.
         ai_response = gpt(chat_log, QUESTION_ASKER_ID)
-        # Use a default message if GPT returns an empty response.
         if not ai_response or ai_response.strip() == "" or ai_response.strip().lower() == "none":
             ai_response = "Creating your agent, please wait..."
 
@@ -83,17 +81,16 @@ def continue_conversation():
             agent = AGENT()
             agent.name = agent_info["agentName"]
             agent.description = agent_info["description"]
-            # You can set additional parameters as needed.
             main(agent)
 
             # Insert the new agent into MongoDB.
             new_agent = {
                 "agentName": agent.name,
                 "description": agent.description,
-                "modelType": "chatGPT",  # Or other value as needed.
+                "modelType": "chatGPT",
                 "flag": "default"
             }
-            result = agents_collection.insert_one(new_agent)
+            agents_collection.insert_one(new_agent)
 
             # Remove conversation data.
             del conversation_data[conversation_id]
@@ -103,7 +100,6 @@ def continue_conversation():
             return jsonify({"message": ai_response, "finished": False})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
 
 @bp.route('/agent/<agent_name>', methods=['GET'])
 def get_agent(agent_name):
@@ -117,7 +113,6 @@ def get_agent(agent_name):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
 @bp.route('/api/agents', methods=['GET'])
 def get_all_agents():
     try:
@@ -127,7 +122,6 @@ def get_all_agents():
         return jsonify({"agents": agents})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
 
 @bp.route('/agents', methods=['GET'])
 def agents_page():
