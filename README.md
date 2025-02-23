@@ -1,52 +1,35 @@
-# BoilerMake
-TOMORROW: we show up 9
-Elan - data compiling - schema for mongodb
-Sean - Frontend - AWS schemas
-Shay - Make templates - Make AI agent - sync with Elan - Sync with frontend
+# SmithAI
 
-1 function of the website will have a repository using mongodb that holds all the different AI agents.
+## Inspiration
+We were inspired by a challenge from Y Combinator to make AI more accessible for everyone. Rather than limiting powerful AI tools to those who can navigate a terminal or write code, we saw an opportunity to democratize AI. Our project extends this mission by enabling anyone—even complete beginners—to harness AI for complex tasks on demand, opening up possibilities that were once reserved for highly technical users.
 
-Each AI agent will have a name, description, and flag for which AI agent.
-Users will prompt the AI and the AI will build the agent and it can be downloaded as an executable that is simple to use.
-You tell the AI what you need, it asks you follow up questions, and you will answer then it will make the agent.
-If the AI agent already exists, it will be on the repository and they will respond.
+## What It Does
+SmithAI enables you to create and deploy AI “agents” tailored to your specific needs—be it answering questions, automating tasks, or analyzing data. Under the hood, an intelligent algorithm determines which large language model (LLM) is best suited for your request and seamlessly routes you there. No more second-guessing which AI tool to use—SmithAI handles the complexity behind the scenes.
 
-Frontend HTML css JS - python middle layer - mongodb backend
-Make the agent - upload to mongodb - spawn an ec2 instance running the agent - website pings the ec2 instance 
-There will be a template for exactly how the agent will run.
-Keep as much of the formatting for the launch configuration the same so the linux commands are always the same.
+## How We Built It
+- **Full-Stack**: We developed a frontend using **HTML**, **JavaScript**, and **Tailwind CSS**, and integrated it with ChatGPT, Ollama, Deepseek, and Claude on the backend.  
+- **Smart Routing Algorithm**: Our core logic evaluates multiple LLMs and dynamically chooses which one to use for a given query.  
+- **App Store & Hosting**: We created our own app store on **MongoDB** and host each app on **AWS EC2**, utilizing **Elastic Beanstalk** for orchestration and **S3** for storage.  
+- **Scalable AI**: We run smaller AI models directly on EC2 instances, balancing performance with cost-effectiveness.
 
-sudo yum update
-sudo yum install unzip -y
-sudo yum install python3.12
-sudo yum install nginx -y
-sudo yum update
-sudo yum install nginx -y
-sudo systemctl start nginx
-sudo systemctl enable nginx
-sudo nano /etc/nginx/conf.d/flask_app.conf
-paste: 
-echo "server { listen 80;
-server_name YOUR_EC2_PUBLIC_IP;
-location / {
-  proxy_pass http://127.0.0.1:5000;
-  proxy_set_header Host \$host;
-  proxy_set_header X-Real-IP \$remote_addr;
-  proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-  proxy_set_header X-Forwarded-Proto \$scheme;
-} }" | sudo tee /etc/nginx/conf.d/flask_app.conf
-sudo nginx -t
-sudo systemctl reload nginx
-sudo yum install git
-git clone https://github.com/ShayManor/GeographyHelper.git
-cd GeographyHelper
-python3.12 -m venv test
-source test/bin/activate
-pip3 install -r requirements.txt
-python3 app.py
-export OPENAI_API_KEY=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
-export ANTHROPIC_API_KEY=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
-1) apt install
-2) install git
-3) clone
-4) run the agent
+## Challenges We Ran Into
+1. **Model Orchestration**: Coordinating multiple AI models with different strengths and limitations required robust infrastructure planning and fallback mechanisms.  
+2. **User-Friendly Interface**: Building an interface that’s intuitive for non-technical users while still offering advanced features for power users was a delicate balance.
+
+## Accomplishments That We’re Proud Of
+- **On-Demand AI Agents**: Users can spin up AI-driven agents without writing a single line of code.  
+- **Seamless Model Switching**: Our intelligent routing algorithm automatically picks the best model for each request—no manual intervention needed.  
+- **Infrastructure Mastery**: We’ve built a cohesive stack using EC2, Elastic Beanstalk, and S3 that easily scales as demand grows.
+
+## What We Learned
+- **Orchestration & Engineering**: Integrating multiple AI models is as much about system design as it is about AI expertise.  
+- **Leveraging Strengths**: We learned how to blend the capabilities of different models (e.g., ChatGPT for natural language and Claude for complex reasoning) into one unified experience.  
+- **Full-Stack & AWS**: Working with AWS EC2, Elastic Beanstalk, and S3 gave us hands-on experience in managing dynamic model selection and performance metrics.
+
+## What's Next for SmithAI
+- **Expand Model Library**: Incorporate specialized AI models for code generation, image recognition, and data analytics.  
+- **User-Friendly Interface**: Continue to refine our UI/UX so anyone can deploy advanced AI without feeling overwhelmed.  
+- **Enhanced Collaboration**: Add collaborative features for teams to build and share AI agents seamlessly.  
+- **Global Accessibility**: Implement multi-language support and pursue partnerships to serve diverse communities worldwide.
+
+By lowering the barrier to entry for AI, we believe SmithAI can spark new innovation across industries and empower users from all backgrounds. The possibilities are endless, and we’re excited to see how this technology evolves.
