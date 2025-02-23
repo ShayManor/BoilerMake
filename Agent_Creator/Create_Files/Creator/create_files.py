@@ -41,6 +41,7 @@ def main(agent: AGENT):
 
     create_requirements(agent.path, agent.name)
     git_link = upload_to_github(agent_abs_path)
+    return agent.model
 
 # t = time.time()
 # a = AGENT()
