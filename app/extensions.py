@@ -24,7 +24,8 @@ def gpt(prompt: str, assistant_id):
         messages = client.beta.threads.messages.list(thread_id=thread.id)
         ai_response = messages.data[0].content[0].text.value
         return ai_response
-    return ""
+    print(f"Error running GPT {run.status}")
+    return "DONE"
 
 # Initialize MongoDB connection
 try:

@@ -3,7 +3,7 @@ from enum import Enum
 
 class AI(Enum):
     CHATGPT = 'GPT.py'
-    CLAUDE = 'GPT.py'
+    CLAUDE = 'Claude.py'
     DEEPSEEK = 'DeepSeek.py'
     GEMINI = 'Gemini.py'
 

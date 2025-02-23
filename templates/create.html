@@ -34,11 +34,11 @@
               <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
             </svg>
           </button>
-         
-         
+
+
         </div>
       </div>
-     
+
     </div>
     <!-- Mobile menu (hidden by default, toggle via JavaScript) -->
     <div class="sm:hidden hidden" id="mobile-menu">
@@ -48,17 +48,17 @@
       </div>
     </div>
   </nav>
- 
- 
- 
-
-
- 
 
 
 
 
- 
+
+
+
+
+
+
+
   <!-- Main Section -->
   <main class="container mx-auto pt-25">
     <div class="bg-white px-6 py-16 lg:px-8">
@@ -104,9 +104,9 @@
         </button>
       </form>
     </div>
-   
+
   </main>
- 
+
    <!-- Footer -->
    <footer class="bg-white mt-10">
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
@@ -119,7 +119,7 @@
       </p>
     </div>
   </footer>
- 
+
 
 
   <!-- JavaScript for Interactive Chat -->
@@ -128,7 +128,7 @@
         // Mobile menu toggle
     const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
-    
+
     mobileMenuToggle.addEventListener('click', () => {
       mobileMenu.classList.toggle('hidden');
     });
@@ -190,7 +190,7 @@
       // Append user's answer to the chat log
       const userMsg = document.createElement('div');
       userMsg.className = "text-right";
-      userMsg.innerHTML = `<span class="inline-block bg-indigo-500 px-4 py-2 rounded-lg">${userAnswer}</span>`;
+      userMsg.innerHTML = `<span class="inline-block bg-[#007AFF] px-4 py-2 text-white rounded-lg">${userAnswer}</span>`;
       chatLog.appendChild(userMsg);
 
       // Build the full conversation log by concatenating all chat messages
@@ -207,7 +207,7 @@
       .then(data => {
         const aiMsg = document.createElement('div');
         aiMsg.className = "text-left";
-        aiMsg.innerHTML = `<span class="inline-block bg-gray-700 px-4 py-2 rounded-lg">${data.message}</span>`;
+        aiMsg.innerHTML = `<span class="inline-block bg-gray-400 px-4 py-2 rounded-lg">${data.message}</span>`;
         chatLog.appendChild(aiMsg);
         if (data.finished) {
           chatInput.disabled = true;
@@ -226,8 +226,8 @@
       });
 
 
- 
-   
+
+
 
     });
   </script>
