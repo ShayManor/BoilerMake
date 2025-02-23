@@ -8,23 +8,37 @@
 </head>
 <body class="bg-gray-900 text-white">
   <!-- Header -->
-  <header class="absolute inset-x-0 top-0 z-50">
-    <nav class="flex items-center justify-between px-6 lg:px-8" aria-label="Global">
-      <!-- Logo -->
-      <div class="flex items-center pt-5 pb-5">
-        <a href="#" class="-m-1.5 p-1.5 flex items-center">
-          <span class="sr-only">Futura Apps</span>
-          <!-- Example logo SVG -->
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
-            <path fill-rule="evenodd" clip-rule="evenodd"
-              d="M12.9914 2.86904C12.9914 2.86899 ... 16.8722 12Z" />
-          </svg>
+  <!-- Darker gray header with nav items on the left -->
+  <header class="bg-gray-800 absolute inset-x-0 top-0 z-50">
+    <!-- Reduced padding to px-2 to shift content left -->
+    <nav class="max-w-7xl mx-auto px-2 py-4 flex items-center space-x-4" aria-label="Global">
+      <!-- Text "logo" -->
+      <div class="flex items-center">
+        <a href="/" class="text-4xl font-bold text-white">
+          SmithAI
         </a>
       </div>
-      <!-- Mobile menu button -->
-      <div class="flex lg:hidden">
+
+      <!-- Desktop Navbar -->
+      <div class="hidden lg:flex space-x-15">
+        <a href="/agents"
+           class="inline-block text-xl font-semibold text-white px-4 py-2 rounded hover:bg-gray-700 transition">
+          Discover
+        </a>
+        <a href="/create"
+           class="inline-block text-xl font-semibold text-white px-4 py-2 rounded hover:bg-gray-700 transition">
+          Create
+        </a>
+        <a href="/about"
+           class="inline-block text-xl font-semibold text-white px-4 py-2 rounded hover:bg-gray-700 transition">
+          About
+        </a>
+      </div>
+
+      <!-- Mobile menu button (shown only on small screens) -->
+      <div class="lg:hidden">
         <button id="menuButton" type="button"
-          class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-400 focus:outline-none">
+          class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-white focus:outline-none">
           <span class="sr-only">Open main menu</span>
           <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round"
@@ -32,36 +46,22 @@
           </svg>
         </button>
       </div>
-      <!-- Desktop Navbar -->
-      <div class="hidden lg:flex lg:justify-center lg:gap-x-12 w-full">
-        <a href="/agents" class="text-sm font-semibold text-white hover:text-indigo-400 transition">
-            Discover
-          </a>
-          <a href="/create" class="text-sm font-semibold text-white hover:text-indigo-400 transition">
-            Create
-          </a>
-          <a href="/about" class="text-sm font-semibold text-white hover:text-indigo-400 transition">
-            About
-          </a>
-          <a href="/support" class="text-sm font-semibold text-white hover:text-indigo-400 transition">
-            Support
-          </a>
-      </div>
     </nav>
+
     <!-- Mobile Menu -->
     <div id="mobileMenu"
-      class="hidden lg:hidden fixed inset-0 z-50 bg-gray-900 bg-opacity-95 p-6 transition duration-300"
+      class="hidden lg:hidden fixed inset-0 z-50 bg-gray-800 bg-opacity-95 p-6 transition duration-300"
       role="dialog" aria-modal="true">
-      <div class="flex items-center justify-between">
+      <div class="flex items-left justify-between">
         <a href="#" class="-m-1.5 p-1.5 flex items-center">
-          <span class="sr-only">Futura Apps</span>
+          <span class="sr-only">SmithAI</span>
           <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
             <path fill-rule="evenodd" clip-rule="evenodd"
               d="M12.9914 2.86904C12.9914 2.86899 ... 16.8722 12Z" />
           </svg>
         </a>
         <button id="mobileMenuButton" type="button"
-          class="-m-2.5 rounded-md p-2.5 text-gray-400 focus:outline-none">
+          class="-m-2.5 rounded-md p-2.5 text-white focus:outline-none">
           <span class="sr-only">Close menu</span>
           <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -69,17 +69,17 @@
         </button>
       </div>
       <div class="mt-6 flex flex-col space-y-4">
-        <a href="/agents" class="text-base font-semibold text-white hover:text-indigo-400 transition">
+        <a href="/agents"
+           class="text-xl font-semibold text-white px-4 py-2 rounded hover:bg-gray-700 transition">
           Discover
         </a>
-        <a href="/create" class="text-base font-semibold text-white hover:text-indigo-400 transition">
+        <a href="/create"
+           class="text-xl font-semibold text-white px-4 py-2 rounded hover:bg-gray-700 transition">
           Create
         </a>
-        <a href="/about" class="text-base font-semibold text-white hover:text-indigo-400 transition">
+        <a href="/about"
+           class="text-xl font-semibold text-white px-4 py-2 rounded hover:bg-gray-700 transition">
           About
-        </a>
-        <a href="/support" class="text-base font-semibold text-white hover:text-indigo-400 transition">
-          Support
         </a>
       </div>
     </div>
@@ -114,7 +114,6 @@
         <a href="/agents" class="text-gray-400 hover:text-white transition">Discover</a>
         <a href="/create" class="text-gray-400 hover:text-white transition">Create</a>
         <a href="/about" class="text-gray-400 hover:text-white transition">About</a>
-        <a href="/support" class="text-gray-400 hover:text-white transition">Support</a>
       </nav>
       <p class="mt-10 text-center text-sm text-gray-400">
         &copy; 2025 Your Company, Inc. All rights reserved.
