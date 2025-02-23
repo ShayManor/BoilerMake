@@ -26,23 +26,20 @@ sudo systemctl start nginx
 sudo systemctl enable nginx
 sudo nano /etc/nginx/conf.d/flask_app.conf
 paste: 
-server {
-    listen 80;
-    server_name YOUR_EC2_PUBLIC_IP;  # Or your domain name
-
-    location / {
-        proxy_pass http://127.0.0.1:5000;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-}
+echo "server { listen 80;
+server_name YOUR_EC2_PUBLIC_IP;
+location / {
+  proxy_pass http://127.0.0.1:5000;
+  proxy_set_header Host \$host;
+  proxy_set_header X-Real-IP \$remote_addr;
+  proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+  proxy_set_header X-Forwarded-Proto \$scheme;
+} }" | sudo tee /etc/nginx/conf.d/flask_app.conf
 sudo nginx -t
 sudo systemctl reload nginx
 sudo yum install git
-git clone https://github.com/ShayManor/EssayHelper.git
-cd EssayHelper
+git clone https://github.com/ShayManor/GeographyHelper.git
+cd GeographyHelper
 python3.12 -m venv test
 source test/bin/activate
 pip3 install -r requirements.txt
