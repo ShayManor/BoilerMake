@@ -41,13 +41,14 @@ server {
 sudo nginx -t
 sudo systemctl reload nginx
 sudo yum install git
-git clone https://github.com/ShayManor/math-practice-generator.git
-cd math-practice-generator
+git clone https://github.com/ShayManor/EssayHelper.git
+cd EssayHelper
 python3.12 -m venv test
 source test/bin/activate
 pip3 install -r requirements.txt
-python3 app.pysudo systemctl reload nginx
-
+python3 app.py
+export OPENAI_API_KEY=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
+export ANTHROPIC_API_KEY=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
 1) apt install
 2) install git
 3) clone

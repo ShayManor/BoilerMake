@@ -68,7 +68,6 @@
   </footer>
   <!-- JavaScript for Interactive Chat -->
   <script>
-    // References to DOM elements
     const agentForm = document.getElementById('agentForm');
     const chatContainer = document.getElementById('chatContainer');
     const chatLog = document.getElementById('chatLog');
@@ -77,12 +76,11 @@
 
     // Variables to store conversation context
     let conversationId = null;
-    let agentName = "";
 
     // Handle initial agent creation form submission
     agentForm.addEventListener('submit', function(e) {
       e.preventDefault();
-      agentName = document.getElementById('agentName').value;
+      const agentName = document.getElementById('agentName').value;
       const description = document.getElementById('description').value;
 
       // Hide the initial form and show the chat interface
@@ -103,7 +101,6 @@
       })
       .then(response => response.json())
       .then(data => {
-        // Expect the response to include a conversationId and an initial question from the AI.
         conversationId = data.conversationId;
         const aiMsg = document.createElement('div');
         aiMsg.className = "text-left";
@@ -119,32 +116,34 @@
       });
     });
 
-    // Handle subsequent chat input submissions
+    // Handle subsequent chat submissions
     chatForm.addEventListener('submit', function(e) {
       e.preventDefault();
       const userAnswer = chatInput.value;
       chatInput.value = "";
 
-      // Append the user's answer to the chat log
+      // Append user's answer to the chat log
       const userMsg = document.createElement('div');
       userMsg.className = "text-right";
       userMsg.innerHTML = `<span class="inline-block bg-indigo-500 px-4 py-2 rounded-lg">${userAnswer}</span>`;
       chatLog.appendChild(userMsg);
 
-      // Send the user's answer along with conversationId to continue the conversation.
+      // Build the full conversation log by concatenating all chat messages
+      const messages = Array.from(chatLog.children).map(el => el.textContent.trim());
+      const fullChatLog = messages.join("\n");
+
+      // Send conversationId and full chat log to continue the conversation.
       fetch('/create_agent/continue', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ conversationId, answer: userAnswer })
+        body: JSON.stringify({ conversationId, chatLog: fullChatLog })
       })
       .then(response => response.json())
       .then(data => {
-        // Append the AI's response to the chat log.
         const aiMsg = document.createElement('div');
         aiMsg.className = "text-left";
         aiMsg.innerHTML = `<span class="inline-block bg-gray-700 px-4 py-2 rounded-lg">${data.message}</span>`;
         chatLog.appendChild(aiMsg);
-        // If the conversation is finished, disable further input.
         if (data.finished) {
           chatInput.disabled = true;
           const finalMsg = document.createElement('div');
