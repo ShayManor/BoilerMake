@@ -109,7 +109,6 @@ def create_agent():
         return jsonify({"error": str(e)}), 500
 
 
-# Endpoint to continue the conversation.
 @app.route('/create_agent/continue', methods=['POST'])
 def continue_conversation():
     try:
@@ -121,6 +120,10 @@ def continue_conversation():
 
         # Pass the entire chat log to GPT.
         ai_response = gpt(chat_log, QUESTION_ASKER_ID)
+        # Use a default message if GPT returns an empty response.
+        if not ai_response or ai_response.strip() == "" or ai_response.strip().lower() == "none":
+            ai_response = "Creating your agent, please wait..."
+
         if ai_response.strip().upper() == "DONE":
             # Retrieve the initial agent info.
             agent_info = conversation_data.get(conversation_id)
