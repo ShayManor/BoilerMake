@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, jsonify
-import uuid
+import uuid, time
 from app.extensions import agents_collection, conversation_data, gpt, QUESTION_ASKER_ID
 from Helpers.Creator.create_files import main
 from Helpers.Creator.enums import AGENT
@@ -13,11 +13,6 @@ def index():
 @bp.route('/create')
 def create_page():
     return render_template('create.html')
-
-# Commented out unless needed
-# @bp.route('/about')
-# def about():
-#     return render_template('about.html')
 
 @bp.route('/create_agent', methods=['POST'])
 def create_agent():
@@ -36,11 +31,12 @@ def create_agent():
             status = "exists"
             return jsonify({"status": status, "message": message})
 
-        # Generate a new conversation ID.
+        # Generate a new conversation ID and include a default modelType.
         conversation_id = str(uuid.uuid4())
         conversation_data[conversation_id] = {
             "agentName": agent_name,
-            "description": description
+            "description": description,
+            "modelType": "default"  # Ensures modelType is defined.
         }
 
         initial_prompt = f"Agent Name: {agent_name}\nDescription: {description}\nPlease ask a question to refine the assistant."
@@ -51,7 +47,7 @@ def create_agent():
         return jsonify({"error": str(e)}), 500
 
 @bp.route('/create_agent/continue', methods=['POST'])
-def continue_conversation():
+def continue_conversation_demo():
     try:
         data = request.get_json()
         conversation_id = data.get('conversationId')
@@ -61,39 +57,15 @@ def continue_conversation():
 
         # Pass the entire chat log to GPT.
         ai_response = gpt(chat_log, QUESTION_ASKER_ID)
-        if not ai_response or ai_response.strip() == "" or ai_response.strip().lower() == "none":
+        if not ai_response or ai_response.strip() == "":
             ai_response = "Creating your agent, please wait..."
 
         if ai_response.strip().upper() == "DONE":
-            # Retrieve the initial agent info.
-            agent_info = conversation_data.get(conversation_id)
-            if not agent_info:
-                return jsonify({"error": "Conversation data not found"}), 400
-
-            # Create the agent (simulate creation by calling main).
-            agent = AGENT()
-            agent.name = agent_info["agentName"]
-            agent.description = agent_info["description"]
-            agent.avatarUrl = "avatarUrl"
-            agent.FRN = "frn"
-            agent.modelType = agent_info["modelType"]
-            main(agent)
-
-            # Insert the new agent into MongoDB.
-            new_agent = {
-                "agentName": agent.name,
-                "description": agent.description,
-                "modelType": agent.modelType,
-                "avatarUrl": agent.avatarUrl,
-                "FRN": agent.FRN,
-                "flag": "default"
-            }
-            agents_collection.insert_one(new_agent)
-
-            # Remove conversation data.
-            del conversation_data[conversation_id]
-
-            return jsonify({"message": "Agent creation complete.", "finished": True})
+            # Demo Mode: wait for 10 seconds and then return success without creating an agent.
+            time.sleep(7)
+            # Optionally remove conversation data.
+            conversation_data.pop(conversation_id, None)
+            return jsonify({"message": "Agent creation complete!", "finished": True})
         else:
             return jsonify({"message": ai_response, "finished": False})
     except Exception as e:
