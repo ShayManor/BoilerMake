@@ -3,67 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <title>Create AI Agent</title>
-  <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> -->
-  <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <h1>Create Your AI Agent</h1>
-    <!-- Main Section: Create Agent Form -->
-    <div class="relative isolate overflow-hidden pt-20 bg-gray-900">
-        <div class="mx-auto max-w-2xl px-6 lg:px-8">
-          <div class="bg-gray-800 p-8 rounded-lg shadow-lg">
-            <h1 class="text-3xl font-bold mb-6 text-center">Create Your AI Agent</h1>
-            <form id="agentForm" class="space-y-6">
-              <div>
-                <label for="agentName" class="block text-sm font-medium text-gray-300">Agent Name</label>
-                <input type="text" id="agentName" name="agentName" required class="mt-1 block w-full rounded-md border-gray-700 bg-gray-700 px-3 py-2 text-white focus:border-indigo-500 focus:ring-indigo-500">
-              </div>
-              <div>
-                <label for="description" class="block text-sm font-medium text-gray-300">Description</label>
-                <textarea id="description" name="description" required class="mt-1 block w-full rounded-md border-gray-700 bg-gray-700 px-3 py-2 text-white focus:border-indigo-500 focus:ring-indigo-500"></textarea>
-              </div>
-              <div>
-                <label for="modelType" class="block text-sm font-medium text-gray-300">Model Type</label>
-                <input type="text" id="modelType" name="modelType" placeholder="e.g., GPT-3, BERT, etc." required class="mt-1 block w-full rounded-md border-gray-700 bg-gray-700 px-3 py-2 text-white focus:border-indigo-500 focus:ring-indigo-500">
-              </div>
-              <div>
-                <button type="submit" class="w-full rounded-md bg-indigo-500 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-500">Create Agent</button>
-              </div>
-            </form>
-            <div id="result" class="mt-4 text-center text-sm text-gray-300"></div>
-          </div>
+<body class="bg-gray-900 text-white">
+  <header class="p-4 bg-gray-800">
+    <div class="container mx-auto">
+      <h1 class="text-xl font-bold">Create Your AI Agent</h1>
+    </div>
+  </header>
+  <main class="flex items-center justify-center min-h-screen">
+    <div class="w-full max-w-lg p-8 bg-gray-800 rounded-lg shadow-lg">
+      <h1 class="text-3xl font-bold mb-6 text-center">Create Your AI Agent</h1>
+      <form id="agentForm" class="space-y-6">
+        <div>
+          <label for="agentName" class="block text-sm font-medium text-gray-300">Agent Name</label>
+          <input type="text" id="agentName" name="agentName" required class="mt-1 block w-full rounded-md border-gray-700 bg-gray-700 px-3 py-2 text-white focus:border-indigo-500 focus:ring-indigo-500">
         </div>
-      </div>
-      
-  <div id="result"></div>
+        <div>
+          <label for="description" class="block text-sm font-medium text-gray-300">Description</label>
+          <textarea id="description" name="description" required class="mt-1 block w-full rounded-md border-gray-700 bg-gray-700 px-3 py-2 text-white focus:border-indigo-500 focus:ring-indigo-500"></textarea>
+        </div>
+        <div>
+          <label for="modelType" class="block text-sm font-medium text-gray-300">Model Type</label>
+          <input type="text" id="modelType" name="modelType" placeholder="e.g., GPT-3, BERT, etc." required class="mt-1 block w-full rounded-md border-gray-700 bg-gray-700 px-3 py-2 text-white focus:border-indigo-500 focus:ring-indigo-500">
+        </div>
+        <div>
+          <button type="submit" class="w-full rounded-md bg-indigo-500 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+            Create Agent
+          </button>
+        </div>
+      </form>
+      <div id="result" class="mt-4 text-center text-sm text-gray-300"></div>
+    </div>
+  </main>
+
   <script>
     document.getElementById('agentForm').addEventListener('submit', function(e) {
-    e.preventDefault();  // Prevent default form submission
-  
-    // Get values from the form fields
-    const agentName = document.getElementById('agentName').value;
-    const description = document.getElementById('description').value;
-    const modelType = document.getElementById('modelType').value;
-  
-    // Send a POST request to the Flask backend
-    fetch('/create_agent', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ agentName, description, modelType })
-    })
-    .then(response => response.json())
-    .then(data => {
-      document.getElementById('result').innerText = data.message || data.error;
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      document.getElementById('result').innerText = 'An error occurred.';
+      e.preventDefault();
+      const agentName = document.getElementById('agentName').value;
+      const description = document.getElementById('description').value;
+      const modelType = document.getElementById('modelType').value;
+      fetch('/create_agent', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ agentName, description, modelType })
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('result').innerText = data.message || data.error;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('result').innerText = 'An error occurred.';
+      });
     });
-  });
-
-
   </script>
 </body>
 </html>

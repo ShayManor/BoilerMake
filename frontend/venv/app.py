@@ -89,17 +89,18 @@ def create_agent():
             message = f"Agent '{agent_name}' already exists."
             status = "exists"
         else:
-            model = decide_model(description)
+            # model = decide_model(description)
             agent = AGENT()
             agent.name = agent_name
-            agent.model = model[1]
+            # agent.model = model[1]
             agent.description = description
-            main(agent)
+            # main(agent)
 
             new_agent = {
                 "agentName": agent_name,
                 "description": description,
-                "modelType": model[0],
+                # "modelType": model[0],
+                "modelType": "chatGPT",
                 "flag": "default"  # Customize as needed
             }
             result = agents_collection.insert_one(new_agent)
